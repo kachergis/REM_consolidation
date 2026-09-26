@@ -1,0 +1,15 @@
+.DS_Store
+.Rhistory
+.Rapp.history
+# third-party papers and data (kept locally, not versioned)
+sleep consolidation papers/
+batch vs incremental papers/
+STRIPS/
+modeling/refs/
+modeling/exp1/
+modeling/Heathcote2003 - recognition exp1.zip
+CrissHoward.pdf
+Schapiro2017 categorization consolidation to model.pdf
+chang_monaghan_welbourne_16_cogsciconf.pdf
+sleep aids language learning.pdf
+sleep consolidation tDCS.pdf

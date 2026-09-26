@@ -1,0 +1,215 @@
+% 
+% Annual Cognitive Science Conference
+% Sample LaTeX Paper -- Proceedings Format
+% 
+
+% Original : Ashwin Ram (ashwin@cc.gatech.edu)       04/01/1994
+% Modified : Johanna Moore (jmoore@cs.pitt.edu)      03/17/1995
+% Modified : David Noelle (noelle@ucsd.edu)          03/15/1996
+% Modified : Pat Langley (langley@cs.stanford.edu)   01/26/1997
+% Latex2e corrections by Ramin Charles Nakisa        01/28/1997 
+% Modified : Tina Eliassi-Rad (eliassi@cs.wisc.edu)  01/31/1998
+% Modified : Trisha Yannuzzi (trisha@ircs.upenn.edu) 12/28/1999 (in process)
+% Modified : Mary Ellen Foster (M.E.Foster@ed.ac.uk) 12/11/2000
+% Modified : Ken Forbus                              01/23/2004
+% Modified : Eli M. Silk (esilk@pitt.edu)            05/24/2005
+% Modified: Niels Taatgen (taatgen@cmu.edu) 10/24/2006
+
+%% Change ``a4paper'' in the following line to ``letterpaper'' if you are
+%% producing a letter-format document.
+
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage{cogsci}
+\usepackage{pslatex}
+\usepackage{apacite}
+\usepackage{graphicx, caption, subcaption}
+
+
+\title{Should Androids Dream of Electric Sleep? A Dream Machine Proposal}
+ 
+\author{{\large \bf George Kachergis (george.kachergis@gmail.com)} 
+ \AND {\large \bf Roy de Kleijn (kleijnrde@fsw.leidenuniv.nl)} 
+\AND {\large \bf Bernhard Hommel (hommel@fsw.leidenuniv.nl)} \\
+  Institute for Psychology / LIBC, Leiden University \\
+  Leiden, the Netherlands} 
+
+
+\begin{document}
+
+\maketitle
+
+
+\begin{abstract}
+Sleep ...
+
+\textbf{Keywords:} 
+memory consolidation; sleep; dreaming; hippocampal replay
+\end{abstract}
+
+
+\section{Introduction}
+
+Researchers have long been confused why people--and many other animals--must spend around a third of our lives asleep. Why has nature burdened us with needing to be in such a vulnerable, unproductive state for so long? Hypotheses abound about why we have evolved to sleep, ranging from it allows us to conserve energy (during a night full of terrors, even), to it simply being a necessary restorative for tired muscles and minds \cite{Siegel:2013}. Both of these example hypotheses are both reasonable and hard to refute (especially the former). Evidence in favor of the latter has been mounting: in a wide variety of cognitive and motoric tasks, performance drops when sleep patterns are interrupted. 
+
+Not only does sleep deprivation cause performance deficits, but there is now substantial empirical evidence that both declarative (i.e., facts and events--`what', `where', `when') and procedural (i.e., skills--`how') memory benefit from even short periods of sleep. Memory is typically described as three processes: 1) encoding: forming new traces from experience, 2) consolidation: integrating memories with prior knowledge and strengthening/crystallizing the trace, and 3) retrieval: task-dependent extraction of overall familiarity or recall of particular traces. Sleep is generally accepted to aid in consolidation, but under what particular circumstances it helps is not fully understood \cite[for a review, see]{Diekelmann:2009}, nor by which mechanisms it works. It is our goal to hypothesize several mechanisms by which sleep could serve to improve consolidation, and to evaluate which of these are suggested by existing empirical evidence. We will begin by reviewing the physiological characteristics of sleep, along with some of the diverse memory effects that have been found. 
+
+The first experimental evidence that sleep improves memory was improved retention of nonsense syllables after a night of sleep as compared to the same amount of time spent awake \cite{Jenkins:1924}. 
+
+This paper synthesizes the empirical results concerning sleep-induced memory consolidation, reviews the existent theories of the underlying mechanisms, and tries to offer computational insights into how the mind improves memory during sleep. After considering the oft-competing computational needs of the mind (e.g., to quickly and accurately store new information, but also to integrate such episodes with existing knowledge) and what the empirical results indicate about these mechanisms, we offer a computational framework approach to modeling memory consolidation. 
+
+Despite the large amount of interest in developing computational models of episodic memory \cite{Nelson:2013}
+
+We offer some concrete changes to existing models of episodic memory.
+
+\section{Computational Desiderata/Issues}
+
+Machine learning algorithms can be classified as either incremental--allowing data to be added to the model instance by instance--or batch, requiring a (sometimes large) set of training instances before before the model produces useful predictions. Incremental or online algorithms clearly offer the advantage of being able to work (however poorly) with very little data, and can learn immediately when new data are acquired. Moreover, since instances are processed immediately, they do not need to be stored for later updating. One disadvantage is that online updating may require significant computational resources, perhaps at an inconvenient time. In contrast, batch or offline learning algorithms may need a large store of data and quite some time to build an initial useful model, and adding a single training instance may require iterating over the entire (increasing) data store to update the model. 
+
+Another problem with many incremental algorithms is the potential to arrive at different learning outcomes based on the order the instances are encountered in. In many cases, such order effects are undesirable, but on the other hand humans and animals show a variety of order effects (e.g., in associative learning: \citeA{Kachergis:2012vc}. Could sleep be a chance to mitigate the order effects brought on during online learning? %% Maybe give an example that shows why it's important to reduce order effects? Evolutionary blah blah tigers etc.
+
+\subsection{A Tale of Two Robots}
+
+Let's imagine two cooking robots running two different versions of the same underlying learning algorithm during a week of daily training to become pizza chefs: Bob runs a batch version, and Ingrid runs an incremental version. Each day, Bob and Ingrid each watch 10 pizzas being made. Bob watches closely, recording every move for processing later that night, whereas Ingrid learns while watching--but is sometimes overwhelmed by too many simultaneous things to pay attention to. On the other hand, even after seeing the first pizza made, Ingrid is able to make predictions about the next, and can evaluate and update her knowledge (and attention to observing particular steps) based on prediction failures %% Not sure, but maybe give this example BEFORE the machine learning stuff, as kind of an amusing introduction?
+
+A survey of learning algorithms will show the classic algorithmic tradeoff: one can store more, and process less upfront (but retrieval can be costly), or process more upfront and store less.
+
+A few batch-update models have been found to have nearly-equivalent incremental versions. For example, latent semantic analysis \cite[LSA]{Deerwester:1990} learns semantic similarities of words via the singular value decomposition (SVD)--an expensive matrix operation--of a large word $\times$ document co-occurrence matrix. This large matrix--adults know over 70,000 unique words, and have read thousands of documents--must be kept in memory to be updated when a new document is read. Updating the model requires performing the SVD again, so it would be quite expensive to update knowledge every time a new document is read. It is more sensible to read a batch of documents--although, of course, this means that any new knowledge is not available in the model until the latest batch is incorporated. Fortunately, an incremental SVD algorithm has been proposed that not only is less computationally expensive, but also does not require storing the full word $\times$ document \cite{Sarwar:2002}.
+
+\subsection{Storage versus Processing}
+
+Incremental updating versus batch updating: 
+Models that use batch updating require storing all of the instances in long-term memory, allowing the model to iterate over all episodes--even multiple times--to extract higher-level features (e.g., correlations of multiple features). On the other hand, incremental updating can reduce the need to store so much information, much of which may be redundant or already over-learned. %% In conclusion, sleep might be a way to get the best of both worlds: both incremental learning of salient features, while sleep replay could help us learn less salient associations?
+
+
+\section{Empirical Effects}
+
+
+Slow wave sleep (SWS) vs. rapid eye movement (REM) sleep results
+
+
+\subsection{Structure of Sleep}
+
+Sleep in mammals and birds consists of cycles of four stages, proceeding from non-rapid eye movement (NREM) stages 1, 2, and 3 (also called slow-wave sleep), to rapid eye movement (REM) sleep. Human adults typically go through four or five cycles each night, reaching REM sleep every 90 minutes or so. More slow-wave sleep (SWS; NREM3) occurs early in the night, whereas more REM sleep occurs in the last few hours of a night's sleep. Each stage is characterized by particular muscle behaviors and brain activity \cite{Schulz:2008}. 
+
+NREM1 is recognized by somewhat active muscles (e.g., fluttering eyelids and rolling eyes) and alpha waves (7.5-12.5 Hz)--as in an awake state--transitioning to a theta rhythm (6-10 Hz). 
+
+NREM2 exhibits lower muscle activity and no awareness of surroundings, as well as a theta rhythm (6-10 Hz), with periodic sleep spindles (11-16 Hz) and K-complexes. It is thought that sleep spindles reflect the brain inhibiting processing, thereby keeping the sleeper asleep, and occur as a result of information flow between thalamic and cortical areas. Sleep spindles often occur together with K-complexes, which are basically delta waves lasting around one second. Their function is thought to be stimulus suppression as well as memory consolidation support.
+
+Sleepers in SWS (NREM3) show very little reactivity to environmental stimuli, and predominantly delta wave activity ($<3.5$ Hz, high amplitude). SWS (i.e. deep sleep) is also when parasomnias such as sleepwalking and night terrors occur. This is the hardest part of sleep to wake up from, and sleep interruption during this stage often lead to feeling groggy and sleepy. There is evidence to suggest that this is an essential stage of sleep: after sleep deprivation, the amount of SWS increases drastically.
+
+Additionally, REM sleep is characterized by rapid, random eye movements as well as most memorable dreaming. At the same time, muscle ationa prevents dreamers from acting out their dreams. Similar to SWS, deprivation of REM sleep increases the amount of REM sleep in a recovery period, indicating that REM is crucial for normal functioning.
+
+One of the neurotransmitters that is often studied in relation to memory (especially Alzheimer's disease) and sleep is acetylcholine (ACh). ACh levels are lower during sleep than during awake, except during REM sleep when it reaches higher than awake levels. \citeA{Hasselmo:1999} postulates that ACh inhibits feedback loops within the hippocampus and from it to the neocortex). This means that high ACh levels during waking hours (and REM) supports encoding new declarative memories, whereas low ACh during SWS allows replay of hippocampal memories, which are then stored more permanently in the neocortex.
+
+
+\subsection{Declarative Memory}
+
+The type of memory most people are familiar with is declarative or explicit memory. This type of memory provides us with knowledge of facts, such as Athens being the capital of Greece (semantic knowledge), as well as knowledge of personal events, like what you had for dinner last night (episodic knowledge). 
+
+Declarative memory is thought to be largely dependent on the hippocampus. Evidence supporting this theory consist of patient studies as well as various lesion studies in rats. One famous case includes memory disorder patient H.M., who was unable to form episodic memories after surgery removing a large part of his hippocampus. In rats, Eichenbaum (1990) showed that rats with hippocampal system lesions are severely impaired in the flexible use of previously learned information--normally attributed to episodic memory.
+
+But what is exactly the mechanism by which the hippocampus performs this task? The prevailing hypothesis is that the hippocampus enables the consolidation of memory--i.e., converting an initial memory trace to a stable representation. Sleep is thought to play an important role in memory consolidation, for both declarative and implicit memory. During SWS, the episodic information that is stored in the hippocampus is replayed and projected to brain regions in the neocortex, which stores stable, permanent memories. The direction of this information flow reverses during the REM sleep that occurs later in time. It has been proposed by Stickgold (year?) that this allows the hippocampus to remove the unstable, short-term memories in order to make room for new memories to be stored there.
+
+Indeed, there are many studies showing that sleep improves declarative memory using several paradigms. Retention of nonsense syllables has been shown to improve with sleep as early as 1924 (Jenkins and Dallenbach), and more recent research has shown improvement on a paired associates word list after SWS-rich sleep (Gais and Born, 2004). 
+
+In fact, it seems that not only sleep, but dreaming specifically can have beneficial effects on declarative memory. Wamsley et al. (2010) showed that after training on a virtual navigation task, improved performance at retest was correlated with relevant dream imagery during an afternoon nap. Similar thoughts during wakefulness, however, were not. It seems that reactivation of recently formed memories facilitates memory consolidation, with dream imagery reflecting this process.
+
+\subsection{Implicit Memory}
+
+Implicit or non-declarative memories are memories we do not have conscious access to, such as motor skills and procedural and perceptual memory. A positive influence of sleep on a finger tapping task has been demonstrated by Walker et al. (2002), who found that subjects performed 20\% better after a night of sleep compared to subjects spending an equivalent amount of time awake. Furthermore, a correlation was found between the amount of stage 2 NREM sleep and performance improvement. The spindles that are characteristic of stage 2 sleep are thought to trigger specific intracellular mechanisms required for neural plasticity (Walker and Stickgold, 2006). More evidence for this specific influence of stage 2 NREM sleep comes from selective sleep deprivation studies. Smith and MacNeill (1994) found worse retention of a visuomotor adaptation task after stage 2 NREM sleep deprivation compared to REM sleep deprivation.
+
+Similar spindles are visible in the somatosensory cortex of newborn rats and humans following spontaneous twitches during REM sleep, suggesting that learning is taking place in the brain following these movements \cite{Khazipov:2004}. As infants spend relatively more of their sleep time in the REM stage compared to adults, muscle twitching during REM sleep may be a way for the body to build (especially in infants) and reinforce (in adults) specific neural pathways from brain to muscles that are frequently used. This mechanism may simply be a low-level version of a similar mechanism known as motor babbling, which allows infants to build higher-level action-effect associations.
+
+\section{Proposed Model Mechanisms}
+
+- The retrieving effectively from memory (REM) model \cite{Shiffrin:1997} could benefit from offline periods to review the day's episodes (especially emotionally-charged or surprising ones), find the most similar long-term episodes (or semantic memories), and fill in/update feature values. Finally, particularly routine, uninteresting episodes might be erased (e.g., if you ate for breakfast what you always eat, or driving home from work via your usual route).
+
+
+\section{Discussion}
+
+The evidence implicating sleep's benefit to memory consolidation--for both declarative and procedural tasks--is nearly undeniable, as we have reviewed here.
+
+\section{Notes}
+
+- sleep notes: Robert Stickgold 
+a two-step process by which memories important to learning were consolidated and integrated in the brain. During slow-wave sleep, the hippocampus--a region of the brain that stores recent, episodic memories about discrete events--replays its files for the neocortex, home to more permanent memories. The communication between the two brain areas at this time is one way, from the hippocampus to the neocortex. During the REM dreaming that follows, though, the flow of information flips, from the neocortex back to the hippocampus. Stickgold suggested that once the neocortex connects the new memories to others in storage, it sends a message back to the hippocampus to erase them.
+http://www.scientificamerican.com/article/tetris-dreams/
+
+NatNeurosci 2012 hippocampal paper: 
+	- replay during non-REM sleep and awake states occurs at a 10x speedup, whereas REM replay is roughly at the speed of the behavioral episode (p.1443)
+	- during non-REM sleep, replay happens during short periods of increased activity in cortex and hippocampus related to cortical ‘up-states’ (i.e., frames)
+	- both cortex and hippocampus replay similar content, but replay is initiated in the hippocampus, whereas cortical frames start roughly 50ms before hippocampal frame…so replay of sequential event memories may be driven by hippocampus, but memories may be selected by cortex (Lee and Wilson, 2002 Neuron)
+	- Káli, S. and Dayan, P. Off-line replay maintains declarative memories in a model of hippocampal-neocortical interactions. Nat. Neurosci. 7, 286–294 (2004).
+	- consolidation of declarative memories is thought to depend more on early hours of sleep (Plihal and Born, 1999), in part because non-REM sleep is more common in this period
+
+	- Hobson and McCarley’s (1977) activation-synthesis hypothesis: dreams come from neural signals in the brainstem during REM sleep as a result of the brain attempting to make sense of this random input in cortex
+	- but dreaming also occurs during non-REM sleep, and even in the deep ‘slow-wave’ sleep
+	- much empirical evidence now suggests that neural replay of recent experience during sleep helps consolidate memory, processing past experience to prepare for future events
+	- reactivation occurs both in hippocampus and some cortical areas, especially in the first hour of sleep after exploration or learning activity
+	- post-learning sleep improves memory for the learned information, compared to equal periods of wakefulness
+	- participants who report task-related dreams show increased performance on the retest (other Stockgold paper — virtual maze navigation)
+	- during sleep, inhibition at the (level of the) thalamus increases sensory thresholds, blocking all but extreme inputs from the environment
+	- minimal acetylcholine levels during early non-REM sleep are thought to aid the consolidation of episodic memory by promoting information flow from the hippocampus through entorhinal cortex (but REM sleep has >wakeful acetylcholine levels)
+	- REM and non-REM sleep support consolidation of different memory types—and result in dreams using different memory sources (details??)
+
+Mednick 2010 review:
+	- most sleep-benefit studies used procedural memory tasks (knowing “how”): learned actions, habits, and perceptuomotor skills/implicit learning, but now a few have been done with hippocampus-involved declarative memory tasks (fact-based, knowing “what”)
+	- declarative memory consolidation may be mostly done during slow-wave sleep
+	- compared to the ‘enhancement’ model for procedural memory, there are two declarative memory models: active (memory depends on sleep) vs. permissive (time-dependent, interference-sensitive process that uses periods of low hippocampus input to process prior information)
+
+	- declarative or explicit memory—for people, places, and things—is associated with the hippocampus 
+	- non-declarative, implicit memory—for procedural and perceptual knowledge, habits, and basic learning—is non-hippocampal
+	- 
+
+ \citeA{Lee:2002} ran rats repeatedly through a sequence of spatial receptive fields of hippocampal CA1 place cells, and during slow wave sleep (SWS) later ran through the same order of activation at a 20-fold temporal compression of the behavioral sequence, showing that the hippocampus is important for spatial learning—and likely the formation of long-term temporally-extended episodic memories in humans
+
+
+\begin{table}[!ht]
+\begin{center} 
+\caption{Sample table title.} 
+\label{sample-table} 
+\vskip 0.12in
+\begin{tabular}{ll} 
+\hline
+Error type    &  Example \\
+\hline
+Take smaller        &   63 - 44 = 21 \\
+Always borrow~~~~   &   96 - 42 = 34 \\
+0 - N = N           &   70 - 47 = 37 \\
+0 - N = 0           &   70 - 47 = 30 \\
+\hline
+\end{tabular} 
+\end{center} 
+\end{table}
+
+
+\subsection{Figures}
+
+
+\begin{figure}[ht]
+\begin{center}
+\fbox{CoGNiTiVe ScIeNcE}
+\end{center}
+\caption{This is a figure.} 
+\label{sample-figure}
+\end{figure}
+
+
+\section{Acknowledgments}
+
+The preparation of this work was supported by the European Commission (EU Cognitive Systems project ROBOHOW.COG; FP7-ICT-2011).
+
+
+%\section{References}
+
+
+\bibliographystyle{apacite}
+
+\setlength{\bibleftmargin}{.125in}
+\setlength{\bibindent}{-\bibleftmargin}
+
+\bibliography{holo_sleep_refs}
+
+
+\end{document}
