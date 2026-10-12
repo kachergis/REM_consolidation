@@ -30,10 +30,10 @@ cd "$tmp/mirror"
 git config core.quotepath off
 
 export ALLOW
-FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch -q --index-filter '
+FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --index-filter '
   git -c core.quotepath=off ls-files | grep -Ev "$ALLOW" |
     while IFS= read -r f; do git rm -q --cached -- "$f"; done
-' HEAD >/dev/null
+' HEAD >/dev/null 2>&1
 
 leaked=$(git log HEAD --name-only --format= | sort -u | grep -v '^$' | grep -Ev "$ALLOW" || true)
 if [ -n "$leaked" ]; then
