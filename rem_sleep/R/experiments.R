@@ -93,3 +93,67 @@ exp_tmr <- function(par, n_study = 50, reps = 1, n_lex = 1000, n_events = 100, n
     }))
   }))
 }
+
+# ---- Cued recall of paired associates (A -> B); see R/recall.R --------------------------------
+
+# Exp. 4: sleep vs. wake x repetitions x mechanism, cued recall.
+exp_recall_sleep_wake <- function(par, reps = 1:3, n_pairs = 40, n_lex = 1000, n_events = 80,
+                                  n_replay = 40, f = 6, id_scope = "lexicon") {
+  a0 <- new_agent(par, n_lex, n_slots = 2)
+  A <- 1:n_pairs
+  B <- n_pairs + A
+  pool <- setdiff(seq_len(n_lex), c(A, B))
+  do.call(rbind, lapply(reps, function(r) {
+    studied <- study(a0, cbind(A, B), par, r)
+    do.call(rbind, lapply(CONDS, function(cond) {
+      a <- retention(studied, cond, par, n_events, pool, n_replay, f, id_scope = id_scope)
+      data.frame(id_scope = id_scope, reps = r, cond = cond,
+                 t(score_recall(cued_recall(a, A, par), B)))
+    }))
+  }))
+}
+
+# Exp. 5: interference challenge with cued recall, as in Ellenbogen et al. (2006): A-B, then a
+# sleep or wake interval, then (or not) A-C learning, then recall of B given A.
+exp_recall_interference <- function(par, n_pairs = 40, reps = 2, n_lex = 1000, n_events = 80,
+                                    n_replay = 40, f = 6, id_scope = "lexicon",
+                                    conds = c("wake", "sleep", "sleep+reactivate",
+                                              "sleep+reencode", "sleep+both")) {
+  a0 <- new_agent(par, n_lex, n_slots = 2)
+  A <- 1:n_pairs
+  B <- n_pairs + A
+  C <- 2 * n_pairs + A
+  pool <- setdiff(seq_len(n_lex), c(A, B, C))
+  studied <- study(a0, cbind(A, B), par, reps)
+  do.call(rbind, lapply(conds, function(cond) {
+    a <- retention(studied, cond, par, n_events, pool, n_replay, f, id_scope = id_scope)
+    do.call(rbind, lapply(c("none", "A-C"), function(intf) {
+      b <- if (intf == "A-C") study(a, cbind(A, C), par, reps) else a
+      r <- cued_recall(b, A, par)
+      data.frame(id_scope = id_scope, cond = cond, interference = intf,
+                 t(score_recall(r, B)), c_intrusion = mean(r %in% C))
+    }))
+  }))
+}
+
+# Exp. 6: TMR with cued recall: half the A cues are presented during sleep (fixed replay budget).
+exp_recall_tmr <- function(par, n_pairs = 40, reps = 1, n_lex = 1000, n_replay = 40, f = 6,
+                           p_cue = .5, id_scope = "lexicon",
+                           mechs = c("sleep+reactivate", "sleep+reencode", "sleep+both")) {
+  a0 <- new_agent(par, n_lex, n_slots = 2)
+  A <- 1:n_pairs
+  B <- n_pairs + A
+  cued <- seq(1, n_pairs, 2)
+  studied <- study(a0, cbind(A, B), par, reps)
+  do.call(rbind, lapply(mechs, function(cond) {
+    do.call(rbind, lapply(c(FALSE, TRUE), function(tmr) {
+      a <- retention(studied, cond, par, 0, NULL, n_replay, f, id_scope = id_scope,
+                     cue = if (tmr) A[cued], p_cue = if (tmr) p_cue else 0)
+      r <- cued_recall(a, A, par)
+      rbind(data.frame(id_scope = id_scope, cond = cond, tmr = tmr, items = "cued",
+                       t(score_recall(r[cued], B[cued]))),
+            data.frame(id_scope = id_scope, cond = cond, tmr = tmr, items = "uncued",
+                       t(score_recall(r[-cued], B[-cued]))))
+    }))
+  }))
+}

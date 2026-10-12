@@ -7,11 +7,11 @@ kept unchanged for reference.
 
 ```
 Rscript -e 'testthat::test_file("tests/test_rem.R")'   # unit tests + REM benchmarks
-Rscript run_experiments.R 500                           # ~1 min on 14 cores; writes results/, figures/
+Rscript run_experiments.R 500                           # ~8 min on 14 cores; writes results/, figures/
 ```
 
 Files: `R/rem.R` (REM core), `R/sleep.R` (agent, study, wake, sleep and replay),
-`R/experiments.R` (simulated experiments), `run_experiments.R`, `tests/test_rem.R`. See
+`R/recall.R` (cued recall), `R/experiments.R` (simulated experiments), `run_experiments.R`, `tests/test_rem.R`. See
 `LIT_REVIEW.md` for the empirical targets.
 
 ## Why re-implement
@@ -68,7 +68,7 @@ is inferred by sampling from the REM posterior over LS (lexical-semantic) traces
 - Cued (TMR) replays retrieve a trace ∝ λ given the cued item's LS trace, and use the cued item
   as the source.
 
-## Results (500 simulated participants; AUC means, SE ≤ .003 throughout)
+## Results: recognition (500 simulated participants; AUC means, SE ≤ .003 throughout)
 
 **Identification is the bottleneck.** Maximum a posteriori (MAP) identification of a
 1-repetition trace is 60% correct against the full lexicon and 79% against today's items; 3
@@ -124,11 +124,92 @@ LS trace, desynchronizing LS traces from their episodic traces (re-encoding).
   set-size cost, which argues against a strictly fixed replay budget.
 - Re-encoding gains little from cueing.
 
+## Cued recall
+
+Sleep benefits are reliable for recall but ≈0 for recognition (Newbury & Monaghan, 2019), so
+the mechanisms were also tested with cued recall of A-B pairs (`R/recall.R`). The model follows
+the sampling-then-recovery scheme of ARC-REM (Diller, Nobel & Shiffrin, 2001):
+- **Sampling.** The cue A is matched to the A slot of every trace, and up to k_max = 3 distinct
+  traces are sampled in proportion to their likelihood ratios.
+- **Acceptance.** A sampled trace is used only if its cue log LR exceeds acc_crit = 2.
+- **Recovery.** The B slot of an accepted trace is identified against the whole lexicon, the same
+  computation sleep replay uses. The best item is output if its posterior is at least .5;
+  otherwise the next trace is tried.
+
+The recovery rule is ours; ARC-REM's own equations were not consulted. The acceptance threshold
+was set to keep intrusions below omissions; without it (acc_crit = 0), 73% of intrusions are
+other studied B's. Exp. 4 was rerun with acc_crit = 0 and the pattern is unchanged (correct
+rates shift by ≤ .025). Benchmarks (tests): recall rises with repetitions (.28 / .66 / .83 at
+1 / 2 / 3 reps), falls with list length, and A-C learning cuts B recall from .66 to .42 with
+C intrusions of 44%.
+
+Values below are paired differences in proportion correct (SE in parentheses), 500 simulated
+participants, 40 pairs, 80 wake events, 40 replays.
+
+### Exp. 4: sleep vs. wake × repetitions × mechanism
+
+Change vs. immediate test, at 1 / 2 / 3 repetitions:
+
+| Condition | 1 rep | 2 reps | 3 reps |
+|---|---|---|---|
+| wake | −.027 (.001) | −.025 (.001) | −.015 (.001) |
+| passive sleep | 0 | 0 | 0 |
+| sleep+reactivate, lexicon | −.054 (.002) | −.050 (.002) | −.025 (.002) |
+| sleep+reactivate, today | **+.067 (.003)** | +.051 (.002) | +.030 (.002) |
+| sleep+reencode, lexicon | −.006 (.002) | −.018 (.002) | −.014 (.001) |
+| sleep+reencode, today | −.006 (.002) | +.021 (.003) | +.028 (.002) |
+| sleep+both, today | +.033 (.003) | +.039 (.003) | +.035 (.002) |
+
+- Passive sleep beats wake by only 1.5–2.7 points in recall, much less than in recognition:
+  wake events mostly add intrusions (.30 vs .18 at 1 rep), not omissions.
+- The recognition pattern holds. Reactivation needs good identification ("today"), and then
+  helps weak pairs most. Re-encoding helps only stronger pairs. The two mechanisms are not
+  additive at 1–2 reps.
+- Sleep+reactivate vs. wake at 1 rep: +.094, about a third more pairs recalled.
+
+### Exp. 5: interference challenge with cued recall (Ellenbogen et al., 2006 design)
+
+Sleep benefit = condition − wake, without and with A-C learning before test (2 study reps).
+Interaction = the wake group's A-C cost minus the sleep group's (positive = sleep protects).
+
+| Condition | Benefit, no A-C | Benefit, A-C | Interaction |
+|---|---|---|---|
+| passive sleep | +.024 (.001) | +.009 (.003) | −.015 (.004) |
+| sleep+reactivate, lexicon | −.023 (.002) | +.026 (.004) | +.049 (.003) |
+| sleep+reactivate, today | +.080 (.002) | +.110 (.004) | +.030 (.004) |
+| sleep+reencode, lexicon | +.005 (.002) | +.016 (.004) | +.012 (.003) |
+| sleep+reencode, today | +.046 (.003) | +.041 (.004) | −.005 (.004) |
+| sleep+both, lexicon | −.036 (.002) | +.033 (.003) | +.069 (.003) |
+| sleep+both, today | +.067 (.003) | +.123 (.004) | +.055 (.004) |
+
+- **Only active replay yields Ellenbogen's interaction**, and reactivation does so in both scopes.
+  Passive sleep (less interference) predicts the opposite sign. So the interaction diagnoses
+  active consolidation in this model, which raises the stakes of the replication dispute (Bailes
+  et al., 2020 and Pöhlchen et al., 2021 found none; Abel et al., 2023 did).
+- Mechanism: reactivation completes A-B traces, so they win the competition with A-C traces for
+  cue A (C intrusions .42 after wake → .34 after sleep+reactivate, today).
+- With full-lexicon identification, reactivation *crosses over*: it hurts without A-C and
+  helps with it.
+
+### Exp. 6: TMR with cued recall (half the A cues presented during sleep)
+
+Change vs. the same items without TMR, sleep+reactivate:
+
+| Scope | Cued, correct | Cued, intrusions | Uncued, correct | Uncued, intrusions |
+|---|---|---|---|---|
+| lexicon | +.035 (.004) | **+.156 (.006)** | +.009 (.004) | −.042 (.005) |
+| today | +.049 (.005) | +.090 (.006) | −.030 (.004) | −.046 (.005) |
+
+- Cueing helps cued pairs, but it also **raises their intrusions**. A cue sometimes retrieves the
+  wrong pair trace and then writes its own features into that trace's A slot. This binds the cue
+  to another pair's B, a falsifiable prediction: TMR of paired associates should raise cue-specific
+  intrusions.
+- As in recognition, uncued items pay a cost only when spontaneous replay is useful ("today").
+- Re-encoding with TMR: cued +.042 (today), −.014 (lexicon).
+
 ## Limitations and next steps
 
-- Recognition only. Sleep benefits are reliable for recall but ≈0 for recognition
-  (Newbury & Monaghan, 2019: veridical recognition g = 0.005), so the headline targets need
-  REM-style cued/free recall (e.g., sampling + recovery as in SAM/REM variants).
+- Recall is cued recall of pairs only; free recall needs a context model.
 - No context model, so no temporal gradient of interference, and passive sleep = immediate test.
 - The "today" scope assumes the day contained only the study list; realistic days add
   non-studied tagged items, which lowers identification accuracy.

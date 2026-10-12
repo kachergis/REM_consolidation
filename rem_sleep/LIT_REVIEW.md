@@ -64,8 +64,10 @@ verify before citing.
 
 ## 4. What the simulations so far imply, and priorities
 
-1. **Implement recall** (REM/SAM-style sampling + recovery) before anything else. Recall carries
-   the robust sleep effects (A, B, F), and recognition barely shows them.
+1. **Recall: done** (cued recall of pairs, ARC-REM-style sampling + recovery; README Exps. 4–6).
+   Only active replay yields the sleep × interference interaction (B); passive sleep predicts the
+   opposite sign. TMR of pairs is predicted to raise cue-specific intrusions. Free recall still
+   needs a context model.
 2. **Wake vs. passive sleep** already reproduces a sleep advantage that grows with repetitions
    (cf. the Berres & Erdfelder moderator). Magnitude is set by the arbitrary amount of wake
    interference, so fit it to data (e.g., hours awake → events).
@@ -75,9 +77,9 @@ verify before citing.
      (E3 argues against a fixed budget).
    - Spontaneous replay of very weak traces can harm them. This is a counterintuitive,
      falsifiable prediction.
-4. **Interference challenge (B)** is contested; simulate it with cued recall and report both the
-   passive and active predictions. Current associative-recognition results: no sleep ×
-   interference interaction.
+4. **Interference challenge (B)** is contested. In cued recall, reactivation gives a +.03 to
+   +.07 interaction and passive sleep −.015, so the replication outcome bears directly on active
+   vs. passive accounts. Associative recognition shows no interaction.
 5. **Lexical integration (G)** and **category structure (H)** are where LS re-encoding could earn
    its keep. It currently adds little to episodic recognition.
 6. **Report hits and FAs separately.** Reactivation lowers FAs via differentiation, which

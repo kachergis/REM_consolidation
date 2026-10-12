@@ -99,3 +99,41 @@ test_that("reactivation only fills empty features; re-encoding increments LS val
   passive <- sleep(a, par)
   expect_identical(passive$store, a$store)
 })
+
+source("../R/recall.R")
+
+test_that("cued recall retrieves targets from complete, correct traces", {
+  set.seed(5)
+  a <- new_agent(par, n_lex = 300, n_slots = 2)
+  A <- 1:20; B <- 21:40
+  a$store <- probes_of(a, cbind(A, B))
+  a$src <- cbind(A, B)
+  expect_identical(cued_recall(a, A, par), B)
+})
+
+test_that("recall rises with repetitions; A-C learning interferes and intrudes", {
+  rec <- function(reps, ac, seed) {
+    set.seed(seed)
+    a <- new_agent(par, n_lex = 400, n_slots = 2)
+    A <- 1:30; B <- 31:60; C <- 61:90
+    a <- study(a, cbind(A, B), par, reps)
+    if (ac) a <- study(a, cbind(A, C), par, reps)
+    r <- cued_recall(a, A, par)
+    c(score_recall(r, B), c_intr = mean(r %in% C))
+  }
+  m <- function(reps, ac) rowMeans(sapply(1:20, function(s) rec(reps, ac, s)))
+  expect_gt(m(3, FALSE)["correct"], m(1, FALSE)["correct"] + .2)
+  base <- m(2, FALSE); intf <- m(2, TRUE)
+  expect_gt(base["correct"], intf["correct"] + .1)
+  expect_gt(intf["c_intr"], .1)
+})
+
+test_that("a TMR cue on pair traces restores slot 1 from the cued item", {
+  set.seed(6)
+  a <- new_agent(par, n_lex = 200, n_slots = 2)
+  a <- study(a, cbind(1:10, 11:20), par)
+  b <- sleep(a, par, n_replay = 200, mech = "reactivate", cue = 3, p_cue = 1)
+  # cued item 3's own trace gains slot-1 features copied from item 3
+  expect_gt(sum(b$store[3, 1:20] > 0), sum(a$store[3, 1:20] > 0))
+  expect_gt(mean(b$store[3, 1:20][b$store[3, 1:20] > 0] == a$lex[3, b$store[3, 1:20] > 0]), .6)
+})

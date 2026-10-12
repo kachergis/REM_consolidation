@@ -49,14 +49,14 @@ wake <- function(a, par, n_events, pool) {
 #                 are more diagnostic), and traces whose best-matching item (at sleep onset) is
 #                 that item and which stored the old value are updated to the new value.
 # Targeted memory reactivation (TMR): with probability p_cue a replay is cued instead of
-# spontaneous. A cued item's LS trace probes the store, a trace is retrieved in proportion to its
-# likelihood ratio, and the cued item (rather than an inferred one) is the LS trace used.
-# Cueing is only defined for single-item traces.
+# spontaneous. A cued item's LS trace probes slot 1 of the store, a trace is retrieved in
+# proportion to its likelihood ratio, and the cued item (rather than an inferred one) is the LS
+# trace used for slot 1; other slots (e.g., the B of an A-B pair) are identified as usual.
 # id_scope sets which LS traces are candidates when identifying a replayed trace: "lexicon" (all
 # known items) or "today" (only items experienced since the last sleep, i.e., tagged at encoding).
 sleep <- function(a, par, n_replay = 0, mech = character(), f = 6, cue = NULL, p_cue = 0,
                   id_scope = c("lexicon", "today")) {
-  stopifnot(all(mech %in% c("reactivate", "reencode")), is.null(cue) || a$n_slots == 1)
+  stopifnot(all(mech %in% c("reactivate", "reencode")))
   if (n_replay == 0 || !length(mech)) return(a)
   cand <- switch(match.arg(id_scope), lexicon = seq_len(nrow(a$lex)), today = sort(unique(c(a$src))))
   identify <- function(x) identify_loglik(x, a$lex[cand, , drop = FALSE], par)
@@ -72,14 +72,14 @@ sleep <- function(a, par, n_replay = 0, mech = character(), f = 6, cue = NULL, p
     k_cue <- NULL
     if (length(cue) && runif(1) < p_cue) {
       k_cue <- cue[sample.int(length(cue), 1)]
-      ll <- loglik(a$lex[k_cue, ], a$store, par)
+      ll <- loglik(a$lex[k_cue, ], a$store[, slot_cols(1, par), drop = FALSE], par)
       j <- sample.int(n, 1, prob = exp(ll - max(ll)))
     } else {
       j <- sample.int(n, 1)
     }
     for (s in seq_len(a$n_slots)) {
       cols <- slot_cols(s, par)
-      if (is.null(k_cue)) {
+      if (is.null(k_cue) || s > 1) {
         ll <- identify(a$store[j, cols])
         k <- cand[sample.int(length(cand), 1, prob = exp(ll - max(ll)))]
       } else {

@@ -7,7 +7,10 @@ rem_par <- function(...) {
             u_star = .04,  # probability of storing a feature per unit of study time
             t = 10,        # units of study time per presentation
             c = .7,        # probability that a stored feature is copied correctly
-            crit = 0)      # old/new criterion on log odds (0 = odds of 1, the REM default)
+            crit = 0,      # old/new criterion on log odds (0 = odds of 1, the REM default)
+            k_max = 3,     # cued recall: maximum number of traces sampled per cue
+            acc_crit = 2,  # cued recall: log LR of cue match needed to accept a sampled trace
+            rec_crit = .5) # cued recall: posterior an identified item needs to be output
   p <- modifyList(p, list(...))
   p$u <- 1 - (1 - p$u_star)^p$t  # probability a feature is stored during one presentation
   p
