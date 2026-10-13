@@ -74,45 +74,45 @@
         0.27193           0.01686
  id_scope interference             cond    hr    fa dprime   auc     se  se_auc
   lexicon          A-C            sleep 0.975 0.710  1.445 0.918 0.0137 0.00134
-  lexicon          A-C       sleep+both 0.947 0.776  0.927 0.862 0.0171 0.00178
+  lexicon          A-C       sleep+both 0.948 0.779  0.926 0.863 0.0172 0.00173
   lexicon          A-C sleep+reactivate 0.955 0.713  1.198 0.895 0.0165 0.00159
-  lexicon          A-C   sleep+reencode 0.962 0.755  1.151 0.888 0.0158 0.00158
+  lexicon          A-C   sleep+reencode 0.962 0.757  1.140 0.889 0.0158 0.00157
   lexicon          A-C             wake 0.971 0.665  1.527 0.919 0.0138 0.00139
   lexicon         none            sleep 0.972 0.618  1.675 0.936 0.0145 0.00116
-  lexicon         none       sleep+both 0.935 0.692  1.088 0.870 0.0162 0.00171
+  lexicon         none       sleep+both 0.936 0.695  1.084 0.871 0.0164 0.00167
   lexicon         none sleep+reactivate 0.945 0.619  1.373 0.907 0.0161 0.00151
-  lexicon         none   sleep+reencode 0.955 0.674  1.328 0.902 0.0159 0.00148
+  lexicon         none   sleep+reencode 0.955 0.677  1.320 0.902 0.0160 0.00149
   lexicon         none             wake 0.966 0.554  1.772 0.935 0.0150 0.00116
     today          A-C            sleep 0.975 0.710  1.445 0.918 0.0137 0.00134
-    today          A-C       sleep+both 0.964 0.793  1.031 0.890 0.0153 0.00171
+    today          A-C       sleep+both 0.965 0.805  1.007 0.897 0.0153 0.00160
     today          A-C sleep+reactivate 0.968 0.729  1.307 0.922 0.0156 0.00138
-    today          A-C   sleep+reencode 0.963 0.760  1.143 0.897 0.0163 0.00168
+    today          A-C   sleep+reencode 0.966 0.772  1.132 0.905 0.0163 0.00152
     today          A-C             wake 0.971 0.665  1.527 0.919 0.0138 0.00139
     today         none            sleep 0.972 0.618  1.675 0.936 0.0145 0.00116
-    today         none       sleep+both 0.955 0.717  1.195 0.898 0.0155 0.00162
+    today         none       sleep+both 0.959 0.734  1.175 0.904 0.0157 0.00154
     today         none sleep+reactivate 0.965 0.645  1.519 0.933 0.0155 0.00128
-    today         none   sleep+reencode 0.957 0.677  1.334 0.911 0.0170 0.00156
+    today         none   sleep+reencode 0.960 0.697  1.305 0.917 0.0167 0.00145
     today         none             wake 0.966 0.554  1.772 0.935 0.0150 0.00116
  diff_wake diff_se_wake
    -0.0827       0.0139
-   -0.6005       0.0187
+   -0.6010       0.0186
    -0.3291       0.0178
-   -0.3767       0.0176
+   -0.3876       0.0174
     0.0000       0.0000
    -0.0967       0.0105
-   -0.6833       0.0171
+   -0.6879       0.0170
    -0.3989       0.0157
-   -0.4434       0.0159
+   -0.4519       0.0157
     0.0000       0.0000
    -0.0827       0.0139
-   -0.4959       0.0173
+   -0.5206       0.0174
    -0.2203       0.0167
-   -0.3845       0.0184
+   -0.3952       0.0181
     0.0000       0.0000
    -0.0967       0.0105
-   -0.5766       0.0162
+   -0.5964       0.0159
    -0.2521       0.0145
-   -0.4379       0.0168
+   -0.4662       0.0162
     0.0000       0.0000
  id_scope             cond           cue    hr     fa dprime   auc     se
   lexicon       sleep+both   no TMR cued 0.552 0.0941   1.49 0.803 0.0155
@@ -169,238 +169,312 @@
   lexicon    1             wake   0.252    0.3034 0.00307       -0.02650
   lexicon    1            sleep   0.278    0.1773 0.00308       -0.00030
   lexicon    1 sleep+reactivate   0.224    0.2753 0.00289       -0.05395
-  lexicon    1   sleep+reencode   0.272    0.2157 0.00311       -0.00605
-  lexicon    1       sleep+both   0.221    0.2119 0.00292       -0.05710
+  lexicon    1   sleep+reencode   0.277    0.2211 0.00314       -0.00175
+  lexicon    1       sleep+both   0.226    0.2167 0.00292       -0.05255
   lexicon    2        immediate   0.664    0.1188 0.00343        0.00000
   lexicon    2             wake   0.640    0.1845 0.00344       -0.02450
   lexicon    2            sleep   0.663    0.1201 0.00341       -0.00140
   lexicon    2 sleep+reactivate   0.614    0.1769 0.00353       -0.04985
-  lexicon    2   sleep+reencode   0.646    0.1373 0.00341       -0.01780
-  lexicon    2       sleep+both   0.605    0.1402 0.00359       -0.05930
+  lexicon    2   sleep+reencode   0.650    0.1394 0.00337       -0.01410
+  lexicon    2       sleep+both   0.609    0.1421 0.00351       -0.05480
   lexicon    3        immediate   0.827    0.0669 0.00258        0.00000
   lexicon    3             wake   0.812    0.1043 0.00275       -0.01535
   lexicon    3            sleep   0.827    0.0669 0.00259        0.00005
   lexicon    3 sleep+reactivate   0.802    0.0946 0.00277       -0.02500
-  lexicon    3   sleep+reencode   0.813    0.0779 0.00271       -0.01415
-  lexicon    3       sleep+both   0.795    0.0815 0.00274       -0.03240
+  lexicon    3   sleep+reencode   0.815    0.0788 0.00267       -0.01210
+  lexicon    3       sleep+both   0.798    0.0815 0.00272       -0.02945
     today    1        immediate   0.278    0.1774 0.00318        0.00000
     today    1             wake   0.252    0.3034 0.00307       -0.02650
     today    1            sleep   0.278    0.1773 0.00308       -0.00030
     today    1 sleep+reactivate   0.345    0.2550 0.00340        0.06675
-    today    1   sleep+reencode   0.273    0.2136 0.00328       -0.00580
-    today    1       sleep+both   0.312    0.2165 0.00347        0.03340
+    today    1   sleep+reencode   0.332    0.2316 0.00314        0.05320
+    today    1       sleep+both   0.361    0.2259 0.00341        0.08260
     today    2        immediate   0.664    0.1188 0.00343        0.00000
     today    2             wake   0.640    0.1845 0.00344       -0.02450
     today    2            sleep   0.663    0.1201 0.00341       -0.00140
     today    2 sleep+reactivate   0.715    0.1172 0.00320        0.05125
-    today    2   sleep+reencode   0.685    0.1141 0.00344        0.02135
-    today    2       sleep+both   0.703    0.1047 0.00346        0.03910
+    today    2   sleep+reencode   0.722    0.1112 0.00302        0.05775
+    today    2       sleep+both   0.734    0.1047 0.00295        0.07020
     today    3        immediate   0.827    0.0669 0.00258        0.00000
     today    3             wake   0.812    0.1043 0.00275       -0.01535
     today    3            sleep   0.827    0.0669 0.00259        0.00005
     today    3 sleep+reactivate   0.857    0.0586 0.00245        0.03010
-    today    3   sleep+reencode   0.855    0.0558 0.00267        0.02775
-    today    3       sleep+both   0.862    0.0538 0.00270        0.03460
+    today    3   sleep+reencode   0.867    0.0561 0.00244        0.03980
+    today    3       sleep+both   0.875    0.0527 0.00227        0.04805
  diff_se_immediate
           0.000000
           0.001394
           0.000875
           0.002250
-          0.001704
-          0.002364
+          0.001711
+          0.002347
           0.000000
           0.001260
           0.000763
           0.002175
-          0.002043
-          0.002461
+          0.001935
+          0.002363
           0.000000
           0.001031
           0.000498
           0.001669
-          0.001480
-          0.001805
+          0.001429
+          0.001752
           0.000000
           0.001394
           0.000875
           0.002762
-          0.002390
-          0.002984
+          0.002091
+          0.002776
           0.000000
           0.001260
           0.000763
           0.002368
-          0.002542
-          0.002854
+          0.002178
+          0.002526
           0.000000
           0.001031
           0.000498
           0.001722
-          0.001830
-          0.002244
+          0.001664
+          0.001933
  id_scope reps             cond correct intrusion      se diff_immediate
   lexicon    1        immediate   0.293    0.3624 0.00311        0.00000
   lexicon    1            sleep   0.293    0.3620 0.00308        0.00020
-  lexicon    1       sleep+both   0.244    0.4000 0.00302       -0.04885
+  lexicon    1       sleep+both   0.248    0.4060 0.00303       -0.04460
   lexicon    1 sleep+reactivate   0.248    0.4617 0.00299       -0.04505
-  lexicon    1   sleep+reencode   0.288    0.4094 0.00307       -0.00480
+  lexicon    1   sleep+reencode   0.292    0.4167 0.00310       -0.00075
   lexicon    1             wake   0.252    0.4734 0.00305       -0.04070
   lexicon    2        immediate   0.680    0.1978 0.00330        0.00000
   lexicon    2            sleep   0.679    0.1990 0.00332       -0.00085
-  lexicon    2       sleep+both   0.633    0.2012 0.00343       -0.04705
+  lexicon    2       sleep+both   0.636    0.2028 0.00340       -0.04395
   lexicon    2 sleep+reactivate   0.644    0.2352 0.00345       -0.03630
-  lexicon    2   sleep+reencode   0.666    0.2132 0.00331       -0.01365
+  lexicon    2   sleep+reencode   0.669    0.2138 0.00328       -0.01080
   lexicon    2             wake   0.638    0.2645 0.00341       -0.04215
   lexicon    3        immediate   0.840    0.0924 0.00253        0.00000
   lexicon    3            sleep   0.840    0.0928 0.00253       -0.00010
-  lexicon    3       sleep+both   0.811    0.1027 0.00269       -0.02840
+  lexicon    3       sleep+both   0.814    0.1026 0.00268       -0.02585
   lexicon    3 sleep+reactivate   0.822    0.1133 0.00268       -0.01785
-  lexicon    3   sleep+reencode   0.828    0.0998 0.00263       -0.01145
+  lexicon    3   sleep+reencode   0.830    0.1003 0.00262       -0.01000
   lexicon    3             wake   0.811    0.1436 0.00279       -0.02895
     today    1        immediate   0.293    0.3624 0.00311        0.00000
     today    1            sleep   0.293    0.3620 0.00308        0.00020
-    today    1       sleep+both   0.329    0.3670 0.00354        0.03575
+    today    1       sleep+both   0.376    0.3636 0.00351        0.08330
     today    1 sleep+reactivate   0.364    0.3921 0.00342        0.07070
-    today    1   sleep+reencode   0.289    0.4047 0.00331       -0.00360
+    today    1   sleep+reencode   0.344    0.4134 0.00321        0.05065
     today    1             wake   0.252    0.4734 0.00305       -0.04070
     today    2        immediate   0.680    0.1978 0.00330        0.00000
     today    2            sleep   0.679    0.1990 0.00332       -0.00085
-    today    2       sleep+both   0.720    0.1507 0.00334        0.03980
+    today    2       sleep+both   0.747    0.1435 0.00287        0.06720
     today    2 sleep+reactivate   0.733    0.1625 0.00314        0.05300
-    today    2   sleep+reencode   0.700    0.1805 0.00335        0.01960
+    today    2   sleep+reencode   0.731    0.1690 0.00298        0.05125
     today    2             wake   0.638    0.2645 0.00341       -0.04215
     today    3        immediate   0.840    0.0924 0.00253        0.00000
     today    3            sleep   0.840    0.0928 0.00253       -0.00010
-    today    3       sleep+both   0.872    0.0668 0.00260        0.03215
+    today    3       sleep+both   0.883    0.0640 0.00221        0.04325
     today    3 sleep+reactivate   0.871    0.0728 0.00233        0.03070
-    today    3   sleep+reencode   0.864    0.0730 0.00259        0.02455
+    today    3   sleep+reencode   0.875    0.0714 0.00237        0.03520
     today    3             wake   0.811    0.1436 0.00279       -0.02895
  diff_se_immediate
           0.000000
           0.001412
-          0.002425
+          0.002443
           0.002312
-          0.001912
+          0.001905
           0.001702
           0.000000
           0.001060
-          0.002390
+          0.002353
           0.002215
-          0.002050
+          0.001962
           0.001691
           0.000000
           0.000693
-          0.001819
+          0.001760
           0.001669
-          0.001525
+          0.001486
           0.001473
           0.000000
           0.001412
-          0.003150
+          0.002966
           0.002865
-          0.002521
+          0.002396
           0.001702
           0.000000
           0.001060
-          0.002847
+          0.002548
           0.002470
-          0.002652
+          0.002298
           0.001691
           0.000000
           0.000693
-          0.002299
+          0.002028
           0.001737
-          0.001885
+          0.001717
           0.001473
  id_scope interference             cond correct intrusion c_intrusion      se
   lexicon          A-C            sleep   0.418     0.531     0.43510 0.00349
-  lexicon          A-C       sleep+both   0.442     0.501     0.37900 0.00341
+  lexicon          A-C       sleep+both   0.447     0.497     0.37440 0.00337
   lexicon          A-C sleep+reactivate   0.435     0.518     0.37215 0.00354
-  lexicon          A-C   sleep+reencode   0.425     0.525     0.41310 0.00354
+  lexicon          A-C   sleep+reencode   0.430     0.521     0.40895 0.00351
   lexicon          A-C             wake   0.409     0.535     0.41740 0.00338
   lexicon         none            sleep   0.662     0.118     0.00255 0.00338
-  lexicon         none       sleep+both   0.602     0.139     0.00415 0.00339
+  lexicon         none       sleep+both   0.607     0.140     0.00430 0.00336
   lexicon         none sleep+reactivate   0.615     0.175     0.00605 0.00352
-  lexicon         none   sleep+reencode   0.642     0.138     0.00380 0.00348
+  lexicon         none   sleep+reencode   0.648     0.139     0.00390 0.00341
   lexicon         none             wake   0.638     0.185     0.00320 0.00332
     today          A-C            sleep   0.418     0.531     0.43510 0.00349
-    today          A-C       sleep+both   0.531     0.425     0.33215 0.00347
+    today          A-C       sleep+both   0.560     0.403     0.30930 0.00327
     today          A-C sleep+reactivate   0.519     0.444     0.34300 0.00352
-    today          A-C   sleep+reencode   0.450     0.503     0.41010 0.00374
+    today          A-C   sleep+reencode   0.479     0.481     0.38825 0.00352
     today          A-C             wake   0.409     0.535     0.41740 0.00338
     today         none            sleep   0.662     0.118     0.00255 0.00338
-    today         none       sleep+both   0.705     0.105     0.00195 0.00333
+    today         none       sleep+both   0.736     0.105     0.00155 0.00297
     today         none sleep+reactivate   0.718     0.111     0.00175 0.00328
-    today         none   sleep+reencode   0.684     0.113     0.00240 0.00377
+    today         none   sleep+reencode   0.721     0.111     0.00175 0.00323
     today         none             wake   0.638     0.185     0.00320 0.00332
  diff_wake diff_se_wake
    0.00895      0.00336
-   0.03305      0.00339
+   0.03830      0.00334
    0.02645      0.00352
-   0.01640      0.00357
+   0.02095      0.00353
    0.00000      0.00000
    0.02375      0.00135
-  -0.03550      0.00217
+  -0.03060      0.00208
   -0.02260      0.00221
-   0.00460      0.00204
+   0.00975      0.00197
    0.00000      0.00000
    0.00895      0.00336
-   0.12265      0.00378
+   0.15170      0.00368
    0.11025      0.00359
-   0.04110      0.00382
+   0.06995      0.00370
    0.00000      0.00000
    0.02375      0.00135
-   0.06730      0.00271
+   0.09800      0.00247
    0.07975      0.00236
-   0.04620      0.00257
+   0.08290      0.00224
    0.00000      0.00000
  id_scope             cond           cue correct intrusion      se
-  lexicon       sleep+both   no TMR cued   0.224     0.217 0.00407
-  lexicon       sleep+both no TMR uncued   0.223     0.225 0.00424
-  lexicon       sleep+both      TMR cued   0.238     0.266 0.00421
-  lexicon       sleep+both    TMR uncued   0.229     0.198 0.00421
+  lexicon       sleep+both   no TMR cued   0.229     0.222 0.00407
+  lexicon       sleep+both no TMR uncued   0.226     0.225 0.00420
+  lexicon       sleep+both      TMR cued   0.238     0.275 0.00419
+  lexicon       sleep+both    TMR uncued   0.231     0.203 0.00427
   lexicon sleep+reactivate   no TMR cued   0.229     0.288 0.00416
   lexicon sleep+reactivate no TMR uncued   0.228     0.285 0.00410
   lexicon sleep+reactivate      TMR cued   0.265     0.444 0.00447
   lexicon sleep+reactivate    TMR uncued   0.237     0.243 0.00434
-  lexicon   sleep+reencode   no TMR cued   0.278     0.222 0.00454
-  lexicon   sleep+reencode no TMR uncued   0.266     0.220 0.00466
-  lexicon   sleep+reencode      TMR cued   0.265     0.232 0.00460
-  lexicon   sleep+reencode    TMR uncued   0.275     0.220 0.00442
-    today       sleep+both   no TMR cued   0.324     0.210 0.00482
-    today       sleep+both no TMR uncued   0.311     0.218 0.00455
-    today       sleep+both      TMR cued   0.373     0.243 0.00494
-    today       sleep+both    TMR uncued   0.289     0.194 0.00448
+  lexicon   sleep+reencode   no TMR cued   0.283     0.229 0.00452
+  lexicon   sleep+reencode no TMR uncued   0.271     0.226 0.00463
+  lexicon   sleep+reencode      TMR cued   0.268     0.236 0.00455
+  lexicon   sleep+reencode    TMR uncued   0.277     0.226 0.00445
+    today       sleep+both   no TMR cued   0.373     0.229 0.00496
+    today       sleep+both no TMR uncued   0.362     0.227 0.00465
+    today       sleep+both      TMR cued   0.404     0.269 0.00488
+    today       sleep+both    TMR uncued   0.328     0.214 0.00463
     today sleep+reactivate   no TMR cued   0.350     0.259 0.00499
     today sleep+reactivate no TMR uncued   0.347     0.266 0.00475
     today sleep+reactivate      TMR cued   0.399     0.348 0.00487
     today sleep+reactivate    TMR uncued   0.317     0.220 0.00454
-    today   sleep+reencode   no TMR cued   0.283     0.214 0.00431
-    today   sleep+reencode no TMR uncued   0.273     0.212 0.00464
-    today   sleep+reencode      TMR cued   0.325     0.220 0.00474
-    today   sleep+reencode    TMR uncued   0.274     0.219 0.00452
+    today   sleep+reencode   no TMR cued   0.344     0.219 0.00469
+    today   sleep+reencode no TMR uncued   0.330     0.231 0.00470
+    today   sleep+reencode      TMR cued   0.364     0.239 0.00458
+    today   sleep+reencode    TMR uncued   0.314     0.232 0.00477
  diff_no TMR cued diff_se_no TMR cued
            0.0000             0.00000
-          -0.0011             0.00598
-           0.0134             0.00347
-           0.0048             0.00591
+          -0.0025             0.00599
+           0.0091             0.00341
+           0.0020             0.00594
            0.0000             0.00000
           -0.0018             0.00592
            0.0352             0.00374
            0.0074             0.00589
            0.0000             0.00000
-          -0.0127             0.00649
-          -0.0138             0.00307
-          -0.0040             0.00623
+          -0.0115             0.00642
+          -0.0148             0.00293
+          -0.0055             0.00619
            0.0000             0.00000
-          -0.0128             0.00662
-           0.0493             0.00470
-          -0.0352             0.00661
+          -0.0108             0.00720
+           0.0309             0.00413
+          -0.0445             0.00705
            0.0000             0.00000
           -0.0024             0.00689
            0.0493             0.00468
           -0.0327             0.00668
            0.0000             0.00000
-          -0.0097             0.00630
-           0.0422             0.00405
-          -0.0092             0.00617
+          -0.0137             0.00694
+           0.0202             0.00341
+          -0.0294             0.00689
+ id_scope strength                     cond correct intrusion      se diff_wake
+  lexicon   strong                immediate   0.827    0.0702 0.00386    0.0199
+  lexicon   strong                     wake   0.807    0.1060 0.00390    0.0000
+  lexicon   strong                    sleep   0.825    0.0706 0.00385    0.0185
+  lexicon   strong         sleep+reactivate   0.803    0.1012 0.00414   -0.0040
+  lexicon   strong sleep+reactivate, prio 1   0.803    0.0998 0.00386   -0.0040
+  lexicon   strong sleep+reactivate, prio 4   0.811    0.0851 0.00401    0.0039
+  lexicon   strong               sleep+both   0.796    0.0890 0.00417   -0.0109
+  lexicon   strong       sleep+both, prio 1   0.804    0.0857 0.00409   -0.0027
+  lexicon   strong       sleep+both, prio 4   0.809    0.0758 0.00393    0.0027
+  lexicon     weak                immediate   0.279    0.1549 0.00447    0.0268
+  lexicon     weak                     wake   0.252    0.2981 0.00431    0.0000
+  lexicon     weak                    sleep   0.279    0.1550 0.00451    0.0273
+  lexicon     weak         sleep+reactivate   0.227    0.2508 0.00445   -0.0245
+  lexicon     weak sleep+reactivate, prio 1   0.207    0.2893 0.00386   -0.0448
+  lexicon     weak sleep+reactivate, prio 4   0.185    0.3182 0.00394   -0.0670
+  lexicon     weak               sleep+both   0.220    0.1935 0.00426   -0.0316
+  lexicon     weak       sleep+both, prio 1   0.201    0.2095 0.00404   -0.0503
+  lexicon     weak       sleep+both, prio 4   0.183    0.2179 0.00400   -0.0690
+    today   strong                immediate   0.827    0.0702 0.00386    0.0199
+    today   strong                     wake   0.807    0.1060 0.00390    0.0000
+    today   strong                    sleep   0.825    0.0706 0.00385    0.0185
+    today   strong         sleep+reactivate   0.851    0.0703 0.00373    0.0440
+    today   strong sleep+reactivate, prio 1   0.839    0.0795 0.00351    0.0321
+    today   strong sleep+reactivate, prio 4   0.822    0.0891 0.00398    0.0150
+    today   strong               sleep+both   0.878    0.0588 0.00317    0.0711
+    today   strong       sleep+both, prio 1   0.868    0.0650 0.00332    0.0615
+    today   strong       sleep+both, prio 4   0.849    0.0729 0.00361    0.0424
+    today     weak                immediate   0.279    0.1549 0.00447    0.0268
+    today     weak                     wake   0.252    0.2981 0.00431    0.0000
+    today     weak                    sleep   0.279    0.1550 0.00451    0.0273
+    today     weak         sleep+reactivate   0.354    0.2142 0.00496    0.1022
+    today     weak sleep+reactivate, prio 1   0.369    0.2459 0.00488    0.1173
+    today     weak sleep+reactivate, prio 4   0.387    0.2757 0.00491    0.1355
+    today     weak               sleep+both   0.356    0.1969 0.00480    0.1041
+    today     weak       sleep+both, prio 1   0.377    0.2164 0.00496    0.1256
+    today     weak       sleep+both, prio 4   0.407    0.2174 0.00518    0.1552
+ diff_se_wake
+      0.00158
+      0.00000
+      0.00154
+      0.00245
+      0.00237
+      0.00218
+      0.00245
+      0.00241
+      0.00221
+      0.00184
+      0.00000
+      0.00185
+      0.00320
+      0.00347
+      0.00362
+      0.00310
+      0.00340
+      0.00386
+      0.00158
+      0.00000
+      0.00154
+      0.00269
+      0.00260
+      0.00251
+      0.00303
+      0.00288
+      0.00277
+      0.00184
+      0.00000
+      0.00185
+      0.00411
+      0.00445
+      0.00471
+      0.00411
+      0.00441
+      0.00489

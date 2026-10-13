@@ -157,3 +157,36 @@ exp_recall_tmr <- function(par, n_pairs = 40, reps = 1, n_lex = 1000, n_replay =
     }))
   }))
 }
+
+# Exp. 7: replay prioritization with a mixed-strength list (cf. Drosopoulos et al., 2007;
+# Denis et al., 2021; Schapiro et al., 2018). Half the pairs are studied once (weak), half three
+# times (strong); sleep replay is uniform (prio = 0) or favors weak traces (prio > 0).
+# Cued recall is scored separately for weak and strong pairs.
+exp_recall_strength <- function(par, n_pairs = 40, n_lex = 1000, n_events = 80, n_replay = 40,
+                                f = 6, prios = c(0, 1, 4), id_scope = "lexicon") {
+  a0 <- new_agent(par, n_lex, n_slots = 2)
+  A <- 1:n_pairs
+  B <- n_pairs + A
+  strong <- seq(2, n_pairs, 2)
+  pool <- setdiff(seq_len(n_lex), c(A, B))
+  # strong pairs get two extra presentations; all pairs then get one (strong = 3, weak = 1)
+  studied <- study(a0, cbind(A, B), par, 1)
+  for (r in 1:2) for (i in strong) {
+    studied$store[i, ] <- encode(studied$store[i, ], c(t(studied$lex[c(A[i], B[i]), ])), par)
+  }
+  conds <- rbind(data.frame(cond = c("immediate", "wake", "sleep"), prio = 0),
+                 expand.grid(cond = c("sleep+reactivate", "sleep+both"), prio = prios,
+                             stringsAsFactors = FALSE))
+  is_strong <- A %in% strong
+  do.call(rbind, lapply(seq_len(nrow(conds)), function(i) {
+    cond <- conds$cond[i]
+    prio <- conds$prio[i]
+    a <- retention(studied, cond, par, n_events, pool, n_replay, f, id_scope = id_scope,
+                   prio = prio)
+    r <- cued_recall(a, A, par)
+    rbind(data.frame(id_scope = id_scope, cond = cond, prio = prio, strength = "weak",
+                     t(score_recall(r[!is_strong], B[!is_strong]))),
+          data.frame(id_scope = id_scope, cond = cond, prio = prio, strength = "strong",
+                     t(score_recall(r[is_strong], B[is_strong]))))
+  }))
+}

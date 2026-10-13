@@ -146,4 +146,20 @@ ggplot(s6, aes(cond, correct, colour = cue, shape = cue)) +
   labs(x = NULL, y = "Cued recall (proportion correct)", colour = NULL, shape = NULL) + theme_bw()
 ggsave("figures/exp6_recall_tmr.pdf", width = 10, height = 4)
 
+# Exp. 7: replay prioritization of weak memories (mixed-strength list), cued recall
+e7 <- both_scopes(exp_recall_strength, 7e4)
+write.csv(e7, "results/exp7_recall_strength.csv", row.names = FALSE)
+e7$cond <- ifelse(e7$prio > 0, paste0(e7$cond, ", prio ", e7$prio), e7$cond)
+s7 <- summarise_recall(e7, c("id_scope", "strength", "cond"), "cond", "wake")
+s7$cond <- factor(s7$cond, levels = c("immediate", "wake", "sleep",
+  sapply(c("sleep+reactivate", "sleep+both"), function(m) c(m, paste0(m, ", prio ", c(1, 4))))))
+print(s7[order(s7$id_scope, s7$strength, s7$cond), ], digits = 3, row.names = FALSE)
+ggplot(s7, aes(cond, correct, colour = strength, shape = strength)) +
+  geom_point(position = dodge) +
+  geom_errorbar(aes(ymin = correct - se, ymax = correct + se), width = .2, position = dodge) +
+  facet_wrap(~ id_scope, labeller = label_both) +
+  labs(x = NULL, y = "Cued recall (proportion correct)", colour = "Pair strength",
+       shape = "Pair strength") + theme_bw() + theme(axis.text.x = element_text(angle = 40, hjust = 1))
+ggsave("figures/exp7_recall_strength.pdf", width = 10, height = 5)
+
 writeLines(capture.output(sessionInfo()), "results/sessionInfo.txt")

@@ -46,16 +46,19 @@ wake <- function(a, par, n_events, pool) {
 #   "reactivate": empty features of the trace are re-stored from that LS trace, with the same
 #                 storage (u) and copying (c) processes as study;
 #   "reencode":   f randomly chosen features of that LS trace are incremented by 1 (rarer values
-#                 are more diagnostic), and traces whose best-matching item (at sleep onset) is
-#                 that item and which stored the old value are updated to the new value.
+#                 are more diagnostic), and every trace slot whose best-matching item (at sleep
+#                 onset) is that item and which stored the old value is updated to the new value.
 # Targeted memory reactivation (TMR): with probability p_cue a replay is cued instead of
 # spontaneous. A cued item's LS trace probes slot 1 of the store, a trace is retrieved in
 # proportion to its likelihood ratio, and the cued item (rather than an inferred one) is the LS
 # trace used for slot 1; other slots (e.g., the B of an A-B pair) are identified as usual.
 # id_scope sets which LS traces are candidates when identifying a replayed trace: "lexicon" (all
 # known items) or "today" (only items experienced since the last sleep, i.e., tagged at encoding).
+# prio sets how strongly spontaneous replay favors weak traces: trace j is replayed with
+# probability proportional to (fraction of its content features still empty)^prio, recomputed
+# before each replay. prio = 0 is uniform replay.
 sleep <- function(a, par, n_replay = 0, mech = character(), f = 6, cue = NULL, p_cue = 0,
-                  id_scope = c("lexicon", "today")) {
+                  id_scope = c("lexicon", "today"), prio = 0) {
   stopifnot(all(mech %in% c("reactivate", "reencode")))
   if (n_replay == 0 || !length(mech)) return(a)
   cand <- switch(match.arg(id_scope), lexicon = seq_len(nrow(a$lex)), today = sort(unique(c(a$src))))
@@ -75,7 +78,10 @@ sleep <- function(a, par, n_replay = 0, mech = character(), f = 6, cue = NULL, p
       ll <- loglik(a$lex[k_cue, ], a$store[, slot_cols(1, par), drop = FALSE], par)
       j <- sample.int(n, 1, prob = exp(ll - max(ll)))
     } else {
-      j <- sample.int(n, 1)
+      j <- if (prio == 0) sample.int(n, 1) else {
+        w <- rowMeans(a$store == 0)^prio
+        if (sum(w) > 0) sample.int(n, 1, prob = w) else sample.int(n, 1)
+      }
     }
     for (s in seq_len(a$n_slots)) {
       cols <- slot_cols(s, par)
@@ -90,9 +96,11 @@ sleep <- function(a, par, n_replay = 0, mech = character(), f = 6, cue = NULL, p
         feats <- sample.int(par$w, f)
         old <- a$lex[k, feats]
         a$lex[k, feats] <- old + 1
-        for (jj in which(map_id[, s] == k)) {
-          same <- a$store[jj, cols[feats]] == old
-          a$store[jj, cols[feats][same]] <- old[same] + 1
+        hits <- which(map_id == k, arr.ind = TRUE)  # any slot of any trace identified as k
+        for (h in seq_len(nrow(hits))) {
+          fc <- slot_cols(hits[h, 2], par)[feats]
+          same <- a$store[hits[h, 1], fc] == old
+          a$store[hits[h, 1], fc[same]] <- old[same] + 1
         }
       }
     }

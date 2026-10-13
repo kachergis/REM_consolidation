@@ -52,8 +52,10 @@ is inferred by sampling from the REM posterior over LS (lexical-semantic) traces
 - *reactivate*: empty features of the trace are re-stored from the inferred LS trace with the
   study process (u, c);
 - *re-encode*: 6 features of the inferred LS trace are incremented by 1 (rarer values are more
-  diagnostic), and traces whose best match (at sleep onset) is that item and which hold the old
-  value are updated.
+  diagnostic), and every trace slot whose best match (at sleep onset) is that item and which holds
+  the old value is updated.
+- *prioritization* (`prio` = β): spontaneous replay picks trace j with probability ∝ (fraction of
+  its features still empty)^β, recomputed before each replay; β = 0 is uniform.
 
 **Departures from the 2016 paper, each forced by a problem in the original:**
 - Re-encoding selects LS items through replayed traces instead of sampling ∝ log familiarity
@@ -103,7 +105,7 @@ LS trace, desynchronizing LS traces from their episodic traces (re-encoding).
   events don't interfere with associative recognition, and there is **no sleep × interference
   interaction**. This matches Bailes et al. (2020) and Pöhlchen et al. (2021), not Ellenbogen et
   al. (2006) or Abel et al. (2023).
-- Both mechanisms *reduce* associative AUC (to .87–.93): they strengthen item information in each
+- Both mechanisms *reduce* associative AUC (to .86–.93): they strengthen item information in each
   half of a pair trace, which also raises the odds for rearranged pairs. Concatenated item vectors
   are a poor model of associative memory. This experiment needs associative features or cued
   recall before it can say anything about Ellenbogen-type results.
@@ -146,6 +148,12 @@ C intrusions of 44%.
 Values below are paired differences in proportion correct (SE in parentheses), 500 simulated
 participants, 40 pairs, 80 wake events, 40 replays.
 
+**Correction (Oct 2026).** Re-encoding first updated only traces holding the re-encoded item in
+the *same slot* as the replayed one. When a B slot was misidentified as an A item, that item's
+own pair trace was left stale. Fixing this (regression test added) raised re-encoding results in
+the pair experiments by up to .06 ("today") and ≤ .006 ("lexicon"). Single-item Exps. 1 and 3
+are unchanged. All numbers below are post-fix.
+
 ### Exp. 4: sleep vs. wake × repetitions × mechanism
 
 Change vs. immediate test, at 1 / 2 / 3 repetitions:
@@ -155,17 +163,18 @@ Change vs. immediate test, at 1 / 2 / 3 repetitions:
 | wake | −.027 (.001) | −.025 (.001) | −.015 (.001) |
 | passive sleep | 0 | 0 | 0 |
 | sleep+reactivate, lexicon | −.054 (.002) | −.050 (.002) | −.025 (.002) |
-| sleep+reactivate, today | **+.067 (.003)** | +.051 (.002) | +.030 (.002) |
-| sleep+reencode, lexicon | −.006 (.002) | −.018 (.002) | −.014 (.001) |
-| sleep+reencode, today | −.006 (.002) | +.021 (.003) | +.028 (.002) |
-| sleep+both, today | +.033 (.003) | +.039 (.003) | +.035 (.002) |
+| sleep+reactivate, today | +.067 (.003) | +.051 (.002) | +.030 (.002) |
+| sleep+reencode, lexicon | −.002 (.002) | −.014 (.002) | −.012 (.001) |
+| sleep+reencode, today | +.053 (.002) | +.058 (.002) | +.040 (.002) |
+| sleep+both, lexicon | −.053 (.002) | −.055 (.002) | −.029 (.002) |
+| sleep+both, today | **+.083 (.003)** | +.070 (.003) | +.048 (.002) |
 
 - Passive sleep beats wake by only 1.5–2.7 points in recall, much less than in recognition:
   wake events mostly add intrusions (.30 vs .18 at 1 rep), not omissions.
-- The recognition pattern holds. Reactivation needs good identification ("today"), and then
-  helps weak pairs most. Re-encoding helps only stronger pairs. The two mechanisms are not
-  additive at 1–2 reps.
-- Sleep+reactivate vs. wake at 1 rep: +.094, about a third more pairs recalled.
+- With "today" identification, both mechanisms help. Reactivation helps weak pairs most;
+  re-encoding helps evenly. They are partly additive (+.083 vs. +.067 and +.053 alone at 1 rep).
+  With full-lexicon identification, reactivation hurts and re-encoding does nothing.
+- Sleep+both vs. wake at 1 rep: +.110, about 40% more pairs recalled.
 
 ### Exp. 5: interference challenge with cued recall (Ellenbogen et al., 2006 design)
 
@@ -177,35 +186,60 @@ Interaction = the wake group's A-C cost minus the sleep group's (positive = slee
 | passive sleep | +.024 (.001) | +.009 (.003) | −.015 (.004) |
 | sleep+reactivate, lexicon | −.023 (.002) | +.026 (.004) | +.049 (.003) |
 | sleep+reactivate, today | +.080 (.002) | +.110 (.004) | +.030 (.004) |
-| sleep+reencode, lexicon | +.005 (.002) | +.016 (.004) | +.012 (.003) |
-| sleep+reencode, today | +.046 (.003) | +.041 (.004) | −.005 (.004) |
-| sleep+both, lexicon | −.036 (.002) | +.033 (.003) | +.069 (.003) |
-| sleep+both, today | +.067 (.003) | +.123 (.004) | +.055 (.004) |
+| sleep+reencode, lexicon | +.010 (.002) | +.021 (.004) | +.011 (.003) |
+| sleep+reencode, today | +.083 (.002) | +.070 (.004) | −.013 (.004) |
+| sleep+both, lexicon | −.031 (.002) | +.038 (.003) | +.069 (.003) |
+| sleep+both, today | +.098 (.002) | +.152 (.004) | +.054 (.004) |
 
-- **Only active replay yields Ellenbogen's interaction**, and reactivation does so in both scopes.
-  Passive sleep (less interference) predicts the opposite sign. So the interaction diagnoses
-  active consolidation in this model, which raises the stakes of the replication dispute (Bailes
-  et al., 2020 and Pöhlchen et al., 2021 found none; Abel et al., 2023 did).
+- **Only reactivation yields Ellenbogen's interaction**, in both scopes. Re-encoding raises
+  recall about equally with and without A-C, and passive sleep predicts the opposite sign. So the
+  interaction diagnoses reactivation-type consolidation in this model, which raises the stakes of
+  the replication dispute (Bailes et al., 2020 and Pöhlchen et al., 2021 found none; Abel et al.,
+  2023 did).
 - Mechanism: reactivation completes A-B traces, so they win the competition with A-C traces for
-  cue A (C intrusions .42 after wake → .34 after sleep+reactivate, today).
+  cue A. C intrusions are .42 after wake, .34 after sleep+reactivate and .31 after sleep+both
+  (today).
 - With full-lexicon identification, reactivation *crosses over*: it hurts without A-C and
   helps with it.
 
 ### Exp. 6: TMR with cued recall (half the A cues presented during sleep)
 
-Change vs. the same items without TMR, sleep+reactivate:
+Change vs. the same items without TMR:
 
-| Scope | Cued, correct | Cued, intrusions | Uncued, correct | Uncued, intrusions |
+| Condition, scope | Cued, correct | Cued, intrusions | Uncued, correct | Uncued, intrusions |
 |---|---|---|---|---|
-| lexicon | +.035 (.004) | **+.156 (.006)** | +.009 (.004) | −.042 (.005) |
-| today | +.049 (.005) | +.090 (.006) | −.030 (.004) | −.046 (.005) |
+| reactivate, lexicon | +.035 (.004) | **+.156 (.006)** | +.009 (.004) | −.042 (.005) |
+| reactivate, today | +.049 (.005) | +.090 (.006) | −.030 (.004) | −.046 (.005) |
+| reencode, today | +.020 (.003) | +.020 (.005) | −.016 (.003) | +.001 (.005) |
+| both, today | +.031 (.004) | +.041 (.005) | −.034 (.004) | −.013 (.005) |
 
 - Cueing helps cued pairs, but it also **raises their intrusions**. A cue sometimes retrieves the
   wrong pair trace and then writes its own features into that trace's A slot. This binds the cue
   to another pair's B, a falsifiable prediction: TMR of paired associates should raise cue-specific
   intrusions.
 - As in recognition, uncued items pay a cost only when spontaneous replay is useful ("today").
-- Re-encoding with TMR: cued +.042 (today), −.014 (lexicon).
+
+### Exp. 7: prioritizing weak memories in replay (mixed-strength list)
+
+Half the pairs are studied once (weak), half three times (strong), alternating in the list;
+40 replays. Change vs. wake (weak / strong); passive sleep is +.027 / +.019.
+
+| Replay | β | lexicon: weak | lexicon: strong | today: weak | today: strong |
+|---|---|---|---|---|---|
+| reactivate | 0 (uniform) | −.025 (.003) | −.004 (.002) | +.102 (.004) | +.044 (.003) |
+| reactivate | 1 | −.045 (.003) | −.004 (.002) | +.117 (.004) | +.032 (.003) |
+| reactivate | 4 | −.067 (.004) | +.004 (.002) | +.136 (.005) | +.015 (.003) |
+| both | 0 (uniform) | −.032 (.003) | −.011 (.002) | +.104 (.004) | +.071 (.003) |
+| both | 1 | −.050 (.003) | −.003 (.002) | +.126 (.004) | +.061 (.003) |
+| both | 4 | −.069 (.004) | +.003 (.002) | +.155 (.005) | +.042 (.003) |
+
+- Even uniform replay benefits weak pairs more than strong ones, because weak traces have more
+  empty features to fill. This matches Drosopoulos et al. (2007) and Denis et al. (2021).
+- With good identification, prioritization **trades strong for weak**: from β = 0 to 4, weak
+  gains rise by a third to a half, while strong gains fall by 40–65%.
+- With full-lexicon identification, prioritization is **harmful**: it focuses replay on exactly
+  the traces most likely to be misidentified and corrupted. So weak-first replay (Schapiro et
+  al., 2018) is adaptive in this model only if replay can tell which memory it is replaying.
 
 ## Limitations and next steps
 
@@ -213,5 +247,5 @@ Change vs. the same items without TMR, sleep+reactivate:
 - No context model, so no temporal gradient of interference, and passive sleep = immediate test.
 - The "today" scope assumes the day contained only the study list; realistic days add
   non-studied tagged items, which lowers identification accuracy.
-- Replay is uniform over traces; evidence suggests weak memories are prioritized (Schapiro et
-  al., 2018; Denis et al., 2021). This is a natural next manipulation.
+- Prioritization uses trace completeness, which the model reads directly; a brain would need a
+  proxy (e.g., retrieval difficulty or prediction error at encoding).

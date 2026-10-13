@@ -33,7 +33,7 @@ verify before citing.
 | A | Sleep > wake retention | Jenkins & Dallenbach 1924; Berres & Erdfelder 2021† | Robust for recall | Recall; a wake-interference model (have) |
 | B | Interference challenge: sleep protects A-B from later A-C learning | Ellenbogen et al. 2006, *Curr Biol*†; Abel et al. 2023, *PB&R*† (N = 120, interaction replicated) vs. Bailes et al. 2020, *PLOS One*† and Pöhlchen et al. 2021, *J Sleep Res*† (failures) | **Contested** | Cued recall of paired associates; associative features |
 | C | Encoding strength × sleep | Weak benefit more: Drosopoulos et al. 2007; Denis et al. 2021, *J Neurosci*† (spindles). Strong benefit more: Tucker & Fishbein 2008. Wernette et al. 2024, *J Sleep Res*†: depth matters, repetition doesn't. Berres & Erdfelder: repetition helps | **Mixed**, and "strength" is operationalized inconsistently | Have (repetitions); add depth ≈ u or c |
-| D | Replay prioritizes weak items | Schapiro et al. 2018, *Nat Commun*† (fMRI replay during rest predicts gains after sleep) | Single study | Replay sampling ∝ weakness (easy) |
+| D | Replay prioritizes weak items | Schapiro et al. 2018, *Nat Commun*† (fMRI replay during rest predicts gains after sleep) | Single study | Have (`prio`; README Exp. 7) |
 | E | TMR (targeted memory reactivation): cued > uncued | Rasch et al. 2007, *Science*; Rudoy et al. 2009, *Science*; meta: Hu et al. 2020, *Psych Bull*† (g = 0.29, NREM only; not REM sleep or wake) | Robust (meta) | Have |
 | E2 | TMR helps low-accuracy items; needs a direct cue–memory link | Cairney et al. 2016, *Sleep*† | Moderate | Have (identification bottleneck predicts this) |
 | E3 | No capacity cost: cueing groups of 1, 2 or 6 items is equally effective | Schechtman et al. 2021, *Commun Biol*† | Single study | Tests the fixed-replay-budget assumption |
@@ -65,8 +65,8 @@ verify before citing.
 ## 4. What the simulations so far imply, and priorities
 
 1. **Recall: done** (cued recall of pairs, ARC-REM-style sampling + recovery; README Exps. 4–6).
-   Only active replay yields the sleep × interference interaction (B); passive sleep predicts the
-   opposite sign. TMR of pairs is predicted to raise cue-specific intrusions. Free recall still
+   Only reactivation yields the sleep × interference interaction (B); re-encoding gives none and
+   passive sleep predicts the opposite sign. TMR of pairs is predicted to raise cue-specific intrusions. Free recall still
    needs a context model.
 2. **Wake vs. passive sleep** already reproduces a sleep advantage that grows with repetitions
    (cf. the Berres & Erdfelder moderator). Magnitude is set by the arbitrary amount of wake
@@ -77,11 +77,15 @@ verify before citing.
      (E3 argues against a fixed budget).
    - Spontaneous replay of very weak traces can harm them. This is a counterintuitive,
      falsifiable prediction.
+   - Weak-first replay (D) helps weak memories only when identification is good, at a cost to
+     strong ones; with poor identification it hurts weak memories (README Exp. 7). Sleep
+     benefits weak > strong even under uniform replay (C: consistent with Drosopoulos, Denis).
 4. **Interference challenge (B)** is contested. In cued recall, reactivation gives a +.03 to
    +.07 interaction and passive sleep −.015, so the replication outcome bears directly on active
    vs. passive accounts. Associative recognition shows no interaction.
 5. **Lexical integration (G)** and **category structure (H)** are where LS re-encoding could earn
-   its keep. It currently adds little to episodic recognition.
+   its keep. In episodic recall it helps all strengths evenly (+.04 to +.06, "today" scope) but
+   does not protect against interference.
 6. **Report hits and FAs separately.** Reactivation lowers FAs via differentiation, which
    inflates criterion-based d' relative to AUC.
 

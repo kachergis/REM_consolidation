@@ -137,3 +137,31 @@ test_that("a TMR cue on pair traces restores slot 1 from the cued item", {
   expect_gt(sum(b$store[3, 1:20] > 0), sum(a$store[3, 1:20] > 0))
   expect_gt(mean(b$store[3, 1:20][b$store[3, 1:20] > 0] == a$lex[3, b$store[3, 1:20] > 0]), .6)
 })
+
+test_that("prio = 0 replay is unchanged; prio > 0 replays weak traces more often", {
+  set.seed(7)
+  a <- new_agent(par, n_lex = 200)
+  a <- study(a, 1:20, par)
+  a <- study(a, 21:40, par, reps = 4)  # traces 21-40 are strong
+  set.seed(8); b0 <- sleep(a, par, n_replay = 40, mech = "reactivate")
+  set.seed(8); b1 <- sleep(a, par, n_replay = 40, mech = "reactivate", prio = 0)
+  expect_identical(b0$store, b1$store)
+  # count which traces gain features: weak ones should dominate under strong prioritization
+  gain <- function(prio, seed) {
+    set.seed(seed)
+    b <- sleep(a, par, n_replay = 40, mech = "reactivate", prio = prio)
+    g <- rowSums(b$store > 0) - rowSums(a$store > 0)
+    sum(g[1:20]) / sum(g)
+  }
+  expect_gt(mean(sapply(1:10, gain, prio = 4)), mean(sapply(1:10, gain, prio = 0)) + .1)
+})
+
+test_that("re-encoding updates the item's traces in whichever slot holds it", {
+  set.seed(9)
+  a <- new_agent(par, n_lex = 100, n_slots = 2)
+  a$store <- probes_of(a, rbind(c(1, 2), c(3, 1)))  # item 1 in slot 1 of trace 1, slot 2 of trace 2
+  a$src <- rbind(c(1, 2), c(3, 1))
+  b <- sleep(a, par, n_replay = 30, mech = "reencode", id_scope = "today")
+  # complete, correct traces must stay identical to the (re-encoded) LS traces of their items
+  expect_identical(b$store, probes_of(b, rbind(c(1, 2), c(3, 1))))
+})
